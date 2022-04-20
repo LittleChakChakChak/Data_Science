@@ -54,6 +54,46 @@ def duplicates_work(column):
     print(data[column].duplicated().value_counts())
 
 
+def new_dataframe(column_id, column):
+    # создание отдельных дата фреймов
+    df = pd.DataFrame({column_id: data[column_id], column: data[column]})
+    return df
+
+def drop_column(column):
+    # удаление колонок
+    data.drop(columns=[column], axis=1, inplace=True)
+    return f'Колонка {column} удалена'
+
+def income_categories(value):
+    # категории по прибыли
+    if value >= 1000001:
+       return 'A'
+    elif 200001 <= value <= 1000000:
+        return 'B'
+    elif 50001 <= value <= 200000:
+        return 'C'
+    elif 30001 <= value <= 50000:
+        return 'D'
+    elif 0 < value <= 30000:
+        return 'E'
+    else:
+        print('Нет подходящей категории для ', value)
+
+
+def purpose_categories(value):
+    # категории по назначению
+    if 'авто' in value:
+        return 'операции с автомобилем'
+    elif 'недвиж' or 'жиль' in value:
+        return 'операции с недвижимостью'
+    elif 'свадьб' in value:
+        return 'проведение свадьбы'
+    elif 'образов' in value:
+        return 'получение образования'
+    else:
+        print('Нет подходящей категории для ', value)
+
+
 data = pd.read_csv('data.csv')
 
 # просмотр значений в файле data.csv
@@ -84,3 +124,21 @@ duplicates_work('gender')
 duplicates_work('income_type')
 duplicates_work('purpose')
 
+print('Создание отдельных dataframe"' + DACH * 50)
+df_education = new_dataframe('education_id', 'education')
+print(df_education.head(15))
+print(drop_column('education'))
+
+df_family_status = new_dataframe('family_status_id', 'family_status')
+print(df_family_status.head(15))
+print(drop_column('family_status'))
+
+print(data.dtypes)
+
+print('Категории по приболи' + DACH * 50)
+data['total_income_category'] = data['total_income'].apply(income_categories)
+print(data[['total_income', 'total_income_category']].head(15))
+
+print('Категории по назначению' + DACH * 50)
+data['purpose_category'] = data['purpose'].apply(purpose_categories)
+print(data[['purpose', 'purpose_category']].head(15))
