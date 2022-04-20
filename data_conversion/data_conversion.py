@@ -142,3 +142,6 @@ print(data[['total_income', 'total_income_category']].head(15))
 print('Категории по назначению' + DACH * 50)
 data['purpose_category'] = data['purpose'].apply(purpose_categories)
 print(data[['purpose', 'purpose_category']].head(15))
+
+# сохранение дата фрейма
+data.to_csv('new_data.csv')
