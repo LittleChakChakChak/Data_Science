@@ -59,15 +59,17 @@ def new_dataframe(column_id, column):
     df = pd.DataFrame({column_id: data[column_id], column: data[column]})
     return df
 
+
 def drop_column(column):
     # удаление колонок
     data.drop(columns=[column], axis=1, inplace=True)
     return f'Колонка {column} удалена'
 
+
 def income_categories(value):
     # категории по прибыли
     if value >= 1000001:
-       return 'A'
+        return 'A'
     elif 200001 <= value <= 1000000:
         return 'B'
     elif 50001 <= value <= 200000:
@@ -94,6 +96,10 @@ def purpose_categories(value):
         print('Нет подходящей категории для ', value)
 
 
+def viewing_dependencies(column_0, column_1='debt'):
+    return data[[column_0, column_1]].value_counts()
+
+
 data = pd.read_csv('data.csv')
 
 # просмотр значений в файле data.csv
@@ -112,7 +118,6 @@ fixing_artifacts('days_employed')
 print('Изменени типа столбца "ежемесячный доход"' + DACH * 50)
 data = type_replacement('total_income', 'int64', data)
 print(f"Тип колонки total_income = {data['total_income'].dtypes}")
-
 
 print('Избавление от дублей"' + DACH * 50)
 duplicates_work('education')
@@ -147,12 +152,14 @@ print(data[['purpose', 'purpose_category']].head(15))
 # data.to_csv('new_data.csv')
 
 # Есть ли зависимость между количеством детей и возвратом кредита в срок?
-print(data[['children', 'debt']].value_counts())
+print(viewing_dependencies('children'))
 
 # Есть ли зависимость между семейным положением и возвратом кредита в срок?
-
+print(viewing_dependencies('family_status_id'))
+print(df_family_status.value_counts())
 
 # Есть ли зависимость между уровнем дохода и возвратом кредита в срок?
-
+print(viewing_dependencies('total_income_category'))
 
 # Как разные цели кредита влияют на его возврат в срок?
+print(viewing_dependencies('purpose_category'))
