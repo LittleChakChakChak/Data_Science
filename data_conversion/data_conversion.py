@@ -144,4 +144,15 @@ data['purpose_category'] = data['purpose'].apply(purpose_categories)
 print(data[['purpose', 'purpose_category']].head(15))
 
 # сохранение дата фрейма
-data.to_csv('new_data.csv')
+# data.to_csv('new_data.csv')
+
+# Есть ли зависимость между количеством детей и возвратом кредита в срок?
+print(data[['children', 'debt']].value_counts())
+
+# Есть ли зависимость между семейным положением и возвратом кредита в срок?
+
+
+# Есть ли зависимость между уровнем дохода и возвратом кредита в срок?
+
+
+# Как разные цели кредита влияют на его возврат в срок?
